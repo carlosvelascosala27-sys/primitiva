@@ -2,6 +2,11 @@
 <html lang="es"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>¿Me ha tocado? · Primitiva</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0f3d2f">
+<meta name="apple-mobile-web-app-title" content="Primitiva">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Courier+Prime:wght@400;700&display=swap">
 <style>
 :root{--bg:#0f3d2f;--paper:#fbfaf6;--ink:#1c211f;--mut:#5d655f;--line:#c9cec6;--hit:#ffd23f;--hitink:#2a2200;--ok:#0f6b3d;--okbg:#dff3e6;--no:#7a1f1f;--nobg:#f6e3e1;
@@ -44,7 +49,7 @@ tr.mine td{font-weight:700;background:var(--okbg);color:var(--ok)}
 </style></head><body><main>
 <h1>¿Me ha tocado la Primitiva?</h1>
 <p class="st" id="st"></p>
- 
+
 <section class="card">
 <h2>Esta semana</h2>
 <label class="hint" for="fecha">Fecha del sorteo</label>
@@ -52,19 +57,19 @@ tr.mine td{font-weight:700;background:var(--okbg);color:var(--ok)}
 <label class="hint" for="reiT">Mi reintegro</label>
 <div style="margin-top:6px"><input class="n" id="reiT" maxlength="1" inputmode="numeric" placeholder="0-9"></div>
 </section>
- 
+
 <section class="card">
 <h2>Mis líneas</h2>
 <div id="lines"></div>
 </section>
- 
+
 <button id="go">Comprobar</button>
 <section id="out"></section>
 </main>
 <script>
 // Líneas de siempre. Para cambiarlas, edita aquí (un número por casilla).
 const T=[[1,5,9,10,20,27],[1,3,15,29,35,40],[2,18,22,30,34,37],[1,2,4,13,26,27],[1,10,15,36,39,40]];
- 
+
 const $=s=>document.querySelector(s),p2=n=>String(n).padStart(2,'0');
 const pad=v=>v===''||v==null||isNaN(v)?'':p2(v);
 const EUR=n=>new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR',useGrouping:'always'}).format(n);
@@ -101,4 +106,3 @@ const fd=f.split('-').reverse().join('/');
 out.innerHTML='<div class="card res"><p class="hint">Sorteo del '+fd+'</p>'+head+res+'<h3>Mis líneas</h3>'+html+tab+bote+'</div>';
 out.scrollIntoView({behavior:'smooth',block:'start'})}
 </script></body></html>
- 
