@@ -1,0 +1,41 @@
+name: Actualizar resultados
+ 
+on:
+  schedule:
+    # Sábados 21:30 y 23:30 UTC (el sorteo es a las 21:40 hora de España y la web
+    # tarda ~40 min en publicarlo) y domingo 09:00 UTC como último reintento.
+    - cron: "30 21 * * 6"
+    - cron: "30 23 * * 6"
+    - cron: "0 9 * * 0"
+  workflow_dispatch:
+    inputs:
+      fecha:
+        description: "Fecha del sorteo (AAAA-MM-DD). Vacío = último sábado"
+        required: false
+ 
+permissions:
+  contents: write
+ 
+jobs:
+  actualizar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+ 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+ 
+      - name: Instalar dependencias
+        run: pip install requests beautifulsoup4
+ 
+      - name: Descargar resultado
+        run: python actualizar_resultados.py ${{ github.event.inputs.fecha }}
+ 
+      - name: Guardar cambios
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add resultados.json
+          git diff --cached --quiet || (git commit -m "Resultado actualizado" && git push)
+ 
