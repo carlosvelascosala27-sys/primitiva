@@ -22,7 +22,9 @@ h3{font-size:17px;margin:14px 0 6px}
 .n,.date{border:2px solid var(--line);border-radius:6px;background:transparent;color:var(--ink)}
 .n{width:46px;height:50px;text-align:center;font:700 23px "Courier Prime",ui-monospace,monospace;padding:0}
 .n.big{width:70px;height:62px;font-size:32px}
-.date{font:700 20px "Atkinson Hyperlegible",system-ui,sans-serif;padding:10px;width:100%;margin-bottom:14px}
+#lines .nums{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));flex:1;min-width:0}
+#lines .n{width:100%;min-width:0;font-size:21px}
+.date{font:700 20px "Atkinson Hyperlegible",system-ui,sans-serif;padding:10px;width:100%;min-width:0;min-height:52px;display:block;margin-bottom:14px}
 .n:focus,.date:focus{outline:3px solid var(--ok);outline-offset:1px}
 .line{display:flex;gap:8px;align-items:center;margin-bottom:8px}
 .line b{width:18px;font:700 18px "Courier Prime",monospace}
@@ -45,7 +47,7 @@ tr.mine td{font-weight:700;background:var(--okbg);color:var(--ok)}
 </style></head><body><main>
 <h1>¿Me ha tocado la Primitiva?</h1>
 <p class="st" id="st"></p>
-
+ 
 <section class="card">
 <h2>Esta semana</h2>
 <label class="hint" for="fecha">Fecha del sorteo</label>
@@ -53,14 +55,14 @@ tr.mine td{font-weight:700;background:var(--okbg);color:var(--ok)}
 <label class="hint" for="reiT">Mi reintegro</label>
 <div class="nums"><input class="n big" id="reiT" maxlength="1" inputmode="numeric" placeholder="0-9"></div>
 </section>
-
+ 
 <section class="card">
 <h2>Mis líneas</h2>
 <div id="lines"></div>
 <div class="row"><button class="ghost" id="add">+ Añadir línea</button><button class="ghost" id="del">Quitar última</button></div>
 <p class="hint">Ya están puestas y se guardan en este móvil. Si algún día cambian, se pueden editar.</p>
 </section>
-
+ 
 <button class="go" id="go">Comprobar</button>
 <section id="out"></section>
 </main>
@@ -81,7 +83,7 @@ function lastSat(){const d=new Date();d.setDate(d.getDate()-((d.getDay()+1)%7));
 $('#fecha').value=lastSat();
 $('#add').onclick=()=>{if($('#lines').children.length<8){addLine();save()}};
 $('#del').onclick=()=>{const l=$('#lines');if(l.children.length>1){l.lastChild.remove();save()}};
-document.addEventListener('input',e=>{const t=e.target;if(!t.classList.contains('n'))return;if(t.closest('#lines'))save();if(t.value.length>=t.maxLength){const a=[...document.querySelectorAll('input.n')];const n=a[a.indexOf(t)+1];n&&n.focus()}});
+document.addEventListener('input',e=>{const t=e.target;if(!t.classList.contains('n'))return;if(t.closest('#lines'))save();if(t.id==='reiT'){if(t.value.length>=t.maxLength)t.blur();return}if(t.value.length>=t.maxLength){const a=[...document.querySelectorAll('input.n')];const n=a[a.indexOf(t)+1];n&&n.focus()}});
 function status(){const k=Object.keys(DATA).sort();$('#st').textContent=k.length?'Último resultado cargado: '+k[k.length-1].split('-').reverse().join('/')+'.':'Todavía no hay resultados cargados.'}
 fetch('resultados.json?'+Date.now()).then(r=>r.json()).then(j=>{DATA=j;const k=Object.keys(j).sort();if(k.length)$('#fecha').value=k[k.length-1]}).catch(()=>{}).finally(status);
 $('#go').onclick=check;
@@ -113,3 +115,4 @@ const fd=f.split('-').reverse().join('/');
 out.innerHTML='<div class="card res"><p class="hint">Sorteo del '+fd+'</p>'+head+res+'<h3>Mis líneas</h3>'+html+tab+bote+'</div>';
 out.scrollIntoView({behavior:'smooth',block:'start'})}
 </script></body></html>
+ 
